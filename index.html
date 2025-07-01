@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DocuShift by Anik: Free PDF Converter & Professional PDF Tools</title>
+    <meta name="description" content="The official DocuShift toolkit by Anik. A complete suite of 15 professional, free online PDF tools. Use our PDF converter to merge, split, compress, protect, and convert files. Features image to PDF convert, PDF to image, and more. Perfectly simple, secure, and stylish.">
+    <meta name="keywords" content="pdf converter, docushift by anik, image to pdf convert, pdf convert, pdf tools, pdf maker, free pdf converter, online pdf tools, merge pdf, compress pdf, protect pdf, anik brand tools">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        :root {
+            --bg-color: #020617;
+            --card-color: #0F172A;
+            --border-color: #1E293B;
+            --text-primary: #E2E8F0;
+            --text-secondary: #94A3B8;
+            --accent-color: #38BDF8;
+            --accent-hover: #7DD3FC;
+            --accent-glow: rgba(56, 189, 248, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            min-height: 100vh;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .main-content-wrapper { flex: 1; }
+        .top-bar {
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+        }
+        .logo-wrapper { display: flex; align-items: baseline; }
+        .logo-wrapper .logo-main {
+            font-size: 1.75rem; font-weight: 800; color: var(--text-primary);
+        }
+        .logo-wrapper .logo-brand {
+            font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);
+            margin-left: 0.5rem; letter-spacing: 0.5px;
+        }
+        .main-container { padding: 2rem; }
+        .page-header { text-align: center; margin-bottom: 3rem; }
+        .page-header h1 { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.5rem; }
+        .page-header p { font-size: 1.25rem; color: var(--text-secondary); max-width: 600px; margin: auto; }
+        #tool-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        @keyframes fadeIn-card {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tool-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeIn-card 0.5s ease-out forwards;
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px var(--accent-glow);
+            border-color: var(--accent-color);
+        }
+        .tool-card .icon { font-size: 2.5rem; color: var(--accent-color); margin-bottom: 1rem; display: block; }
+        .tool-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-primary); }
+        .tool-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+        #tool-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(2, 6, 23, 0.8); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; }
+        #tool-modal.show { display: flex; opacity: 1; }
+        .modal-content { background-color: var(--card-color); border: 1px solid var(--border-color); border-radius: 16px; width: 90%; max-width: 800px; max-height: 90vh; display: flex; flex-direction: column; transform: scale(0.95); transition: transform 0.3s ease; }
+        #tool-modal.show .modal-content { transform: scale(1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .modal-header h2 { font-size: 1.5rem; }
+        #modal-back-btn { font-size: 2rem; cursor: pointer; color: var(--text-secondary); background: none; border: none; }
+        .modal-body { padding: 2rem; overflow-y: auto; }
+        .modal-body h3 { color: var(--accent-color); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-top: 1.5rem; }
+        .modal-body p, .modal-body li { color: var(--text-secondary); line-height: 1.6;}
+        .modal-body strong { color: var(--text-primary); }
+        .file-drop-area { border: 2px dashed var(--border-color); border-radius: 12px; padding: 3rem; text-align: center; cursor: pointer; transition: all 0.2s ease-in-out; background-color: #020617; margin-bottom: 1.5rem; }
+        .file-drop-area:hover { border-color: var(--accent-color); background-color: rgba(56, 189, 248, 0.1); }
+        .file-drop-area i { font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem; }
+        .file-drop-area p { font-size: 1.1rem; color: var(--text-secondary); }
+        .file-drop-area p strong { color: var(--accent-color); font-weight: 600; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 1rem; border: none; border-radius: 8px; background: var(--accent-color); color: #020617; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease-in-out; margin-top: 1.5rem; }
+        .btn:hover { background: var(--accent-hover); }
+        .btn:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; }
+        .loader { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-left-color: #fff; border-radius: 50%; display: inline-block; animation: spin 1s linear infinite; margin-right: 10px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 1001; }
+        .toast { display: flex; align-items: center; padding: 1rem 1.5rem; margin-bottom: 1rem; border-radius: 8px; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.5); transform: translateX(calc(100% + 20px)); transition: transform 0.5s ease-in-out; font-weight: 500; }
+        .toast.show { transform: translateX(0); }
+        .toast.success { background-color: #059669; } .toast.error { background-color: #DC2626; }
+        .toast i { font-size: 1.5rem; margin-right: 0.75rem; }
+        #main-footer { text-align: center; padding: 2rem 1rem; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.9rem; }
+        #main-footer a { color: var(--text-secondary); margin: 0 10px; text-decoration: none; cursor: pointer;}
+        #main-footer a:hover { color: var(--accent-color); }
+        @media (max-width: 768px) {
+            .top-bar, .main-container { padding: 1rem; }
+            .page-header h1 { font-size: 2rem; }
+            .page-header p { font-size: 1rem; }
+            #tool-gallery { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-content-wrapper">
+        <header class="top-bar">
+            <div class="logo-wrapper">
+                <span class="logo-main">DocuShift</span>
+                <span class="logo-brand">by Anik</span>
+            </div>
+        </header>
+
+        <div class="main-container">
+            <section class="page-header">
+                <h1>The All-in-One Online PDF Converter & Toolkit</h1>
+                <p>All the PDF tools you need in one place. Convert, merge, compress, and edit PDFs with ease. Fast, free, and secure.</p>
+            </section>
+            <main id="tool-gallery"></main>
+        </div>
+    </div>
+
+    <div id="tool-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Tool Title</h2>
+                <button id="modal-back-btn"><i class='bx bx-x'></i></button>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+    
+    <footer id="main-footer">
+        <p>&copy; 2025 DocuShift by Anik. All Rights Reserved.</p>
+        <div>
+            <a data-policy="privacy">Privacy Policy</a>
+            <span>|</span>
+            <a data-policy="terms">Terms & Conditions</a>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            // --- Library Setup ---
+            if (window.pdfjsLib) {
+                window.pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js`;
+            } else { throw new Error("pdf.js library not loaded."); }
+
+            if (typeof window.jspdf === 'undefined' || typeof window.PDFLib === 'undefined' || typeof Sortable === 'undefined') {
+                throw new Error("A core library (jsPDF, PDFLib, or SortableJS) did not load.");
+            }
+            const { jsPDF } = window.jspdf;
+            const { PDFDocument, rgb, degrees, StandardFonts } = window.PDFLib;
+
+            // --- DOM Elements ---
+            const toolGallery = document.getElementById('tool-gallery');
+            const modal = document.getElementById('tool-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            const modalBackBtn = document.getElementById('modal-back-btn');
+            const mainFooter = document.getElementById('main-footer');
+
+            if (!toolGallery || !modal || !modalTitle || !modalBody || !modalBackBtn || !mainFooter) {
+                console.error("A core UI element is missing from the HTML.");
+                return;
+            }
+            
+            // --- Policy Texts ---
+            const policyTexts = {
+                privacy: {
+                    title: 'Privacy Policy',
+                    content: `
+                        <h3>Our Core Privacy Principle: Client-Side Processing</h3>
+                        <p>The most important thing for you to know is that <strong>our tools run entirely within your web browser (client-side)</strong>.</p>
+                        <ul>
+                            <li><strong>We DO NOT upload your files to our servers.</strong> When you select a file, it is processed locally on your computer.</li>
+                            <li><strong>We DO NOT see, store, or have access to your files or their content at any time.</strong> Your data remains private to you.</li>
+                        </ul>
+                        <h3>Information We May Collect</h3>
+                        <p>To improve our website, we may collect anonymous, non-personal usage data using services like Google Analytics. This helps us know which tools are popular. This data cannot be used to identify you personally.</p>
+                        <h3>Contact Us</h3>
+                        <p>If you have any questions, please contact us at <strong>[আপনার ইমেইল ঠিকানা দিন]</strong>.</p>
+                    `
+                },
+                terms: {
+                    title: 'Terms & Conditions',
+                    content: `
+                        <p>By accessing or using the Service, you agree to be bound by these Terms.</p>
+                        <h3>1. Description of Service</h3>
+                        <p>DocuShift by Anik provides a free suite of online, client-side tools for processing PDF files. All operations are performed locally in the user's browser.</p>
+                        <h3>2. User Responsibilities</h3>
+                        <ul>
+                            <li>You are solely responsible for the files and content you process.</li>
+                            <li>You must have the legal right to use, modify, and process the files.</li>
+                        </ul>
+                        <h3>3. Disclaimer of Warranties</h3>
+                        <p>The Service is provided on an "AS IS" basis. You use the Service at your own risk.</p>
+                        <h3>Contact Us</h3>
+                        <p>If you have any questions, please contact us at <strong>[আপনার ইমেইল ঠিকানা দিন]</strong>.</p>
+                    `
+                }
+            };
+
+            // --- Tool Definitions ---
+            const tools = [
+                { id: 'image-to-pdf', title: 'Image to PDF Converter', desc: 'Turn JPG, PNG, and other images into a single PDF file.', icon: 'bxs-file-image' },
+                { id: 'pdf-to-image', title: 'PDF to Image Converter', desc: 'Extract each PDF page into a high-quality JPG image.', icon: 'bx-image-alt' },
+                { id: 'merge-pdf', title: 'Merge PDF', desc: 'Combine multiple PDF files into one single document.', icon: 'bxs-file-plus' },
+                { id: 'split-pdf', title: 'Split PDF', desc: 'Extract a range of pages or a single page from a PDF.', icon: 'bx-cut' },
+                { id: 'compress-pdf', title: 'Compress PDF', desc: 'Reduce the file size of your PDF documents.', icon: 'bxs-compress' },
+                { id: 'text-to-pdf', title: 'Text to PDF Maker', desc: 'Convert any plain text into a professional PDF document.', icon: 'bxs-edit-alt' },
+                { id: 'pdf-to-text', title: 'PDF to Text', desc: 'Extract all the text from your PDF file.', icon: 'bxs-file-txt' },
+                { id: 'protect-pdf', title: 'Protect PDF', desc: 'Add a strong password to your PDF files.', icon: 'bxs-lock-alt' },
+                { id: 'unlock-pdf', title: 'Unlock PDF', desc: 'Remove password protection from your PDF files.', icon: 'bxs-lock-open-alt' },
+                { id: 'add-watermark', title: 'PDF Watermark', desc: 'Stamp an image or text over your PDF in seconds.', icon: 'bxs-droplet-half' },
+                { id: 'rotate-pdf', title: 'Rotate PDF', desc: 'Rotate your PDF files just the way you want them.', icon: 'bx-rotate-right' },
+                { id: 'add-page-numbers', title: 'Add Page Numbers', desc: 'Easily add page numbers to your PDF file.', icon: 'bx-list-ol' },
+                { id: 'reorder-pdf', title: 'Reorder PDF Pages', desc: 'Visually reorder pages in your PDF with a simple interface.', icon: 'bx-move' },
+                { id: 'extract-images', title: 'Extract Images from PDF', desc: 'Pull all embedded images from a PDF file.', icon: 'bx-images' },
+                { id: 'pdf-to-grayscale', title: 'PDF to Grayscale', desc: 'Convert your PDF to black and white with a single click.', icon: 'bx-color-fill' }
+            ];
+
+            // --- UI Rendering & Main Event Handling ---
+            function renderGallery() {
+                toolGallery.innerHTML = tools.map((tool, index) => `
+                    <div class="tool-card" data-tool-id="${tool.id}" style="animation-delay: ${index * 50}ms;">
+                        <i class='bx ${tool.icon} icon'></i>
+                        <h3>${tool.title}</h3>
+                        <p>${tool.desc}</p>
+                    </div>
+                `).join('');
+                
+                toolGallery.addEventListener('click', (e) => {
+                    const card = e.target.closest('.tool-card');
+                    if (card) openToolModal(card.dataset.toolId);
+                });
+            }
+
+            modalBackBtn.addEventListener('click', () => modal.classList.remove('show'));
+
+            mainFooter.addEventListener('click', (e) => {
+                if (e.target.dataset.policy) {
+                    e.preventDefault();
+                    openPolicyModal(e.target.dataset.policy);
+                }
+            });
+
+            // --- Modal Logic ---
+            function openToolModal(toolId) {
+                const tool = tools.find(t => t.id === toolId);
+                if (!tool) return;
+                modalTitle.textContent = tool.title;
+                modalBody.innerHTML = getToolHTML(toolId);
+                modal.classList.add('show');
+                bindUIEvents(modalBody, toolId);
+            }
+            
+            function openPolicyModal(policyType) {
+                const policy = policyTexts[policyType];
+                if (!policy) return;
+                modalTitle.textContent = policy.title;
+                modalBody.innerHTML = policy.content;
+                modal.classList.add('show');
+            }
+
+            function getToolHTML(toolId) {
+                const fileDropHTML = `<div class="file-drop-area"><i class='bx bxs-cloud-upload'></i><p>Drag & drop file(s) here, or <strong>click to select</strong>.</p></div><input type="file" id="file-input" hidden>`;
+                const previewHTML = `<div id="preview-area" style="margin-top: 1rem; max-height: 150px; overflow-y: auto; padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px; background-color: #020617;"></div>`;
+                const buttonHTML = `<button class="btn">${tools.find(t => t.id === toolId).title}</button>`;
+
+                const templates = {
+                    'image-to-pdf': `${fileDropHTML.replace('hidden', 'multiple accept="image/*" hidden')} ${previewHTML} ${buttonHTML}`,
+                    'text-to-pdf': `<div class="input-group"><textarea id="text-input" rows="12" placeholder="Type or paste your text here..." style="width: 100%; background-color: #020617; color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;"></textarea></div>${buttonHTML}`,
+                    'merge-pdf': `${fileDropHTML.replace('hidden', 'multiple accept="application/pdf" hidden')} ${previewHTML} ${buttonHTML}`,
+                    'split-pdf': `${fileDropHTML.replace('hidden', 'accept="application/pdf" hidden')} ${previewHTML} <div class="input-group"><label>Page Range (e.g., 1-3, 5):</label><input type="text" id="split-range" style="width:100%;padding:0.85rem;border-radius:8px;background-color:#0D1117;color:var(--text-primary);border:1px solid var(--border-color);"></div>${buttonHTML}`,
+                    'compress-pdf': `${fileDropHTML.replace('hidden', 'accept="application/pdf" hidden')} ${previewHTML} <div class="input-group"><label>Image Quality:</label><select id="compress-quality" style="width:100%;padding:0.85rem;border-radius:8px;background-color:#0D1117;color:var(--text-primary);border:1px solid var(--border-color);"><option value="0.5">Low</option><option value="0.75" selected>Medium</option><option value="0.92">High</option></select></div>${buttonHTML}`,
+                    'protect-pdf': `${fileDropHTML.replace('hidden', 'accept="application/pdf" hidden')} ${previewHTML} <div class="input-group"><label>Password:</label><input type="password" id="protect-password" style="width:100%;padding:0.85rem;border-radius:8px;background-color:#0D1117;color:var(--text-primary);border:1px solid var(--border-color);"></div>${buttonHTML}`,
+                    'unlock-pdf': `${fileDropHTML.replace('hidden', 'accept="application/pdf" hidden')} ${previewHTML} <div class="input-group"><label>Current Password:</label><input type="password" id="unlock-password" style="width:100%;padding:0.85rem;border-radius:8px;background-color:#0D1117;color:var(--text-primary);border:1px solid var(--border-color);"></div>${buttonHTML}`,
+                    'add-watermark': `${fileDropHTML.replace('hidden', 'accept="application/pdf" hidden')} ${previewHTML} <div class="input-group"><label>Watermark Text:</label><input type="text" id="watermark-text" style="width:100%;padding:0.85rem;border-radius:8px;background-color:#0D1117;color:var(--text-primary);border:1px solid var(--border-color);"></div>${buttonHTML}`,
+                    'rotate-pdf': `${fileDropHTML.replace('hidden', 'accept="application/pdf" hidden')} ${previewHTML} <div class="input-group"><label>Rotation Angle:</label><select id="rotate-angle" style="width:100%;padding:0.85rem;border-radius:8px;background-color:#0D1117;color:var(--text-primary);border:1px solid var(--border-color);"><option value="90">90° Clockwise</option><option value="180">180°</option><option value="270">270° Clockwise</option></select></div>${buttonHTML}`,
+                    'add-page-numbers': `${fileDropHTML.replace('hidden', 'accept="application/pdf" hidden')} ${previewHTML} ${buttonHTML}`,
+                    'reorder-pdf': `${fileDropHTML.replace('hidden', 'accept="application/pdf" hidden')} <div id="reorder-preview" style="display: flex; flex-wrap: wrap; gap: 10px; min-height:100px;"></div> ${buttonHTML}`,
+                    'pdf-to-image': `${fileDropHTML.replace('hidden', 'accept="application/pdf" hidden')} <div id="jpg-preview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div> ${buttonHTML}`,
+                    'pdf-to-text': `${fileDropHTML.replace('hidden', 'accept="application/pdf" hidden')} <div class="input-group"><textarea id="extracted-text" rows="10" readonly placeholder="Extracted text will appear here..."></textarea></div>${buttonHTML}`,
+                    'extract-images': `${fileDropHTML.replace('hidden', 'accept="application/pdf" hidden')} <div id="extracted-images-preview" style="display: flex; flex-wrap: wrap; gap: 10px;"></div> ${buttonHTML}`,
+                    'pdf-to-grayscale': `${fileDropHTML.replace('hidden', 'accept="application/pdf" hidden')} ${previewHTML} ${buttonHTML}`,
+                };
+                return templates[toolId] || 'Tool not found';
+            }
+
+            function bindUIEvents(container, toolId) {
+                const dropArea = container.querySelector('.file-drop-area');
+                const fileInput = container.querySelector('#file-input');
+                if (dropArea && fileInput) {
+                    dropArea.addEventListener('click', () => fileInput.click());
+                    fileInput.addEventListener('change', () => {
+                        const previewArea = container.querySelector('#preview-area') || container.querySelector('#reorder-preview');
+                        if (toolId === 'reorder-pdf') {
+                            renderPageThumbnails(fileInput.files[0], container.querySelector('#reorder-preview'));
+                        } else if (previewArea) {
+                            previewArea.innerHTML = Array.from(fileInput.files).map(f => `<div style="padding: 5px; border-radius: 4px; background: #334155; margin-bottom: 5px; color: var(--text-primary);">${f.name}</div>`).join('');
+                        }
+                    });
+                }
+                container.querySelector('.btn')?.addEventListener('click', (e) => runProcess(e.currentTarget, toolId));
+            }
+
+            async function renderPageThumbnails(file, previewArea) {
+                if(!file || !previewArea) return;
+                previewArea.innerHTML = '<div><span class="loader"></span> Loading Previews...</div>';
+                const pdfData = await file.arrayBuffer();
+                const pdf = await window.pdfjsLib.getDocument({ data: pdfData }).promise;
+                previewArea.innerHTML = '';
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const viewport = page.getViewport({ scale: 0.3 });
+                    const canvas = document.createElement('canvas');
+                    canvas.height = viewport.height; canvas.width = viewport.width;
+                    await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+                    const thumbDiv = document.createElement('div');
+                    thumbDiv.className = 'page-thumb';
+                    thumbDiv.dataset.originalIndex = i;
+                    thumbDiv.style.cssText = "width: 80px; height: auto; border: 1px solid var(--border-color); border-radius: 4px; background-color: #0D1117; cursor: grab; position: relative;";
+                    thumbDiv.innerHTML = `<img src="${canvas.toDataURL()}" style="width:100%;display:block;" alt="Page thumbnail ${i}"/><span class="page-number" style="position: absolute; bottom: 2px; right: 4px; background: rgba(0,0,0,0.7); color: white; font-size: 10px; padding: 1px 4px; border-radius: 2px;">${i}</span>`;
+                    previewArea.appendChild(thumbDiv);
+                }
+                new Sortable(previewArea, { animation: 150, ghostClass: 'sortable-ghost' });
+            }
+            
+            async function runProcess(button, toolId) {
+                const originalText = button.textContent;
+                button.disabled = true;
+                button.innerHTML = `<span class="loader"></span> Processing...`;
+                try {
+                    const handler = toolHandlers[toolId];
+                    if (handler) {
+                        await handler();
+                    } else {
+                        throw new Error('Tool not implemented yet.');
+                    }
+                } catch (error) {
+                    showToast('error', error.message);
+                    console.error(error);
+                } finally {
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+                }
+            }
+            
+            function download(data, filename, type) {
+                const blob = new Blob([data], { type });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+                showToast('success', `${filename} ready for download!`);
+            }
+
+            function showToast(type, message) {
+                const container = document.getElementById('toast-container');
+                if (!container) return;
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `<i class='bx ${type === 'success' ? 'bxs-check-circle' : 'bxs-x-circle'}'></i> ${message}`;
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 100);
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    toast.addEventListener('transitionend', () => toast.remove());
+                }, 5000);
+            }
+
+            const toolHandlers = {
+                'image-to-pdf': async () => {
+                    const files = modalBody.querySelector('#file-input').files;
+                    if (files.length === 0) throw new Error("No images selected.");
+                    const doc = new jsPDF('p', 'mm', 'a4');
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+                        const imgData = await new Promise(resolve => { const reader = new FileReader(); reader.onload = e => resolve(e.target.result); reader.readAsDataURL(file); });
+                        const img = await new Promise(resolve => { const image = new Image(); image.onload = () => resolve(image); image.src = imgData; });
+                        if (i > 0) doc.addPage();
+                        const pdfWidth = doc.internal.pageSize.getWidth();
+                        const pdfHeight = doc.internal.pageSize.getHeight();
+                        const ratio = Math.min(pdfWidth / img.width, pdfHeight / img.height);
+                        const imgWidth = img.width * ratio;
+                        const imgHeight = img.height * ratio;
+                        const x = (pdfWidth - imgWidth) / 2;
+                        const y = (pdfHeight - imgHeight) / 2;
+                        doc.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
+                    }
+                    download(doc.output('blob'), 'DocuShift-Images.pdf', 'application/pdf');
+                },
+                'pdf-to-image': async () => {
+                    const file = modalBody.querySelector('#file-input').files[0];
+                    if (!file) throw new Error("No PDF selected.");
+                    const preview = modalBody.querySelector('#jpg-preview');
+                    preview.innerHTML = '<div><span class="loader"></span> Rendering pages...</div>';
+                    const pdfData = await file.arrayBuffer();
+                    const pdf = await window.pdfjsLib.getDocument({ data: pdfData }).promise;
+                    preview.innerHTML = '';
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const viewport = page.getViewport({ scale: 1.5 });
+                        const canvas = document.createElement('canvas');
+                        canvas.height = viewport.height; canvas.width = viewport.width;
+                        await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+                        const link = document.createElement('a');
+                        link.href = canvas.toDataURL('image/jpeg');
+                        link.download = `DocuShift-Page-${i}.jpg`;
+                        link.innerHTML = `<img src="${link.href}" style="max-width:100px; border:1px solid var(--border-color); border-radius:4px; margin:5px;" alt="Page ${i}" />`;
+                        preview.appendChild(link);
+                        link.click();
+                    }
+                    showToast('success', 'All pages downloaded.');
+                },
+                'merge-pdf': async () => {
+                    const files = modalBody.querySelector('#file-input').files;
+                    if (files.length < 2) throw new Error('Select at least two PDFs.');
+                    const mergedPdf = await PDFDocument.create();
+                    for (const file of files) {
+                        const pdfBytes = await file.arrayBuffer();
+                        const pdf = await PDFDocument.load(pdfBytes);
+                        const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+                        copiedPages.forEach(page => mergedPdf.addPage(page));
+                    }
+                    download(await mergedPdf.save(), "DocuShift-Merged.pdf", "application/pdf");
+                },
+                'split-pdf': async () => {
+                    const file = modalBody.querySelector('#file-input').files[0];
+                    const rangeText = modalBody.querySelector('#split-range').value.trim();
+                    if (!file) throw new Error('Select a PDF.');
+                    if (!rangeText) throw new Error('Enter a page range.');
+                    const pdfDoc = await PDFDocument.load(await file.arrayBuffer());
+                    const totalPages = pdfDoc.getPageCount();
+                    const indices = new Set();
+                    rangeText.split(',').forEach(part => {
+                        part = part.trim();
+                        if (part.includes('-')) {
+                            const [start, end] = part.split('-').map(Number);
+                            for (let i = start; i <= end; i++) if (i > 0 && i <= totalPages) indices.add(i - 1);
+                        } else {
+                            const pageNum = Number(part);
+                            if (pageNum > 0 && pageNum <= totalPages) indices.add(pageNum - 1);
+                        }
+                    });
+                    if (indices.size === 0) throw new Error('Invalid page range.');
+                    const newDoc = await PDFDocument.create();
+                    const copiedPages = await newDoc.copyPages(pdfDoc, Array.from(indices));
+                    copiedPages.forEach(page => newDoc.addPage(page));
+                    download(await newDoc.save(), 'DocuShift-Split.pdf', 'application/pdf');
+                },
+                'compress-pdf': async () => { showToast('error', 'This feature is complex and under development.'); },
+                'text-to-pdf': async () => {
+                    const text = modalBody.querySelector('#text-input').value;
+                    if (!text.trim()) throw new Error('Please enter text.');
+                    const doc = new jsPDF();
+                    const lines = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 20);
+                    doc.text(lines, 10, 10);
+                    download(doc.output('blob'), 'DocuShift-Text.pdf', 'application/pdf');
+                },
+                'pdf-to-text': async () => {
+                    const file = modalBody.querySelector('#file-input').files[0];
+                    if (!file) throw new Error('Select a PDF.');
+                    const pdfData = await file.arrayBuffer();
+                    const pdf = await window.pdfjsLib.getDocument({ data: pdfData }).promise;
+                    let fullText = '';
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        fullText += textContent.items.map(item => item.str).join(' ') + '\n\n';
+                    }
+                    modalBody.querySelector('#extracted-text').value = fullText;
+                    showToast('success', 'Text extraction complete.');
+                },
+                'protect-pdf': async () => {
+                    const file = modalBody.querySelector('#file-input').files[0];
+                    const password = modalBody.querySelector('#protect-password').value;
+                    if (!file || !password) throw new Error('File or password missing.');
+                    const pdfDoc = await PDFDocument.load(await file.arrayBuffer());
+                    await pdfDoc.save({ userPassword: password, ownerPassword: password });
+                    download(await pdfDoc.save(), 'DocuShift-Protected.pdf', 'application/pdf');
+                },
+                'unlock-pdf': async () => {
+                    const file = modalBody.querySelector('#file-input').files[0];
+                    const password = modalBody.querySelector('#unlock-password').value;
+                    if (!file) throw new Error('Select a PDF.');
+                    if (!password) throw new Error('Enter the password.');
+                    const pdfDoc = await PDFDocument.load(await file.arrayBuffer(), { ownerPassword: password });
+                    download(await pdfDoc.save(), 'DocuShift-Unlocked.pdf', 'application/pdf');
+                },
+                'add-watermark': async () => {
+                    const file = modalBody.querySelector('#file-input').files[0];
+                    const text = modalBody.querySelector('#watermark-text').value.trim();
+                    if (!file) throw new Error('Select a PDF.');
+                    if (!text) throw new Error('Enter watermark text.');
+                    const pdfDoc = await PDFDocument.load(await file.arrayBuffer());
+                    const helveticaFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+                    for (const page of pdfDoc.getPages()) {
+                        const { width, height } = page.getSize();
+                        page.drawText(text, { x: 60, y: height / 2, font: helveticaFont, size: 50, color: rgb(0, 0, 0), opacity: 0.15, rotate: degrees(-45) });
+                    }
+                    download(await pdfDoc.save(), 'DocuShift-Watermarked.pdf', 'application/pdf');
+                },
+                'rotate-pdf': async () => {
+                    const file = modalBody.querySelector('#file-input').files[0];
+                    if (!file) throw new Error('Select a PDF.');
+                    const angle = Number(modalBody.querySelector('#rotate-angle').value);
+                    const pdfDoc = await PDFDocument.load(await file.arrayBuffer());
+                    pdfDoc.getPages().forEach(page => page.setRotation(degrees(page.getRotation().angle + angle)));
+                    download(await pdfDoc.save(), 'DocuShift-Rotated.pdf', 'application/pdf');
+                },
+                'add-page-numbers': async () => {
+                    const file = modalBody.querySelector('#file-input').files[0];
+                    if (!file) throw new Error('Select a PDF.');
+                    const pdfDoc = await PDFDocument.load(await file.arrayBuffer());
+                    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+                    const pages = pdfDoc.getPages();
+                    for (let i = 0; i < pages.length; i++) {
+                        const { width } = pages[i].getSize();
+                        pages[i].drawText(`${i + 1} / ${pages.length}`, { x: width / 2 - 15, y: 20, font: helveticaFont, size: 12, color: rgb(0, 0, 0) });
+                    }
+                    download(await pdfDoc.save(), 'DocuShift-Numbered.pdf', 'application/pdf');
+                },
+                'reorder-pdf': async () => {
+                    const file = modalBody.querySelector('#file-input').files[0];
+                    if(!file) throw new Error('No file selected.');
+                    const pageThumbs = modalBody.querySelectorAll('#reorder-preview .page-thumb');
+                    const newOrderIndices = Array.from(pageThumbs).map(thumb => parseInt(thumb.dataset.originalIndex) - 1);
+                    const pdfDoc = await PDFDocument.load(await file.arrayBuffer());
+                    const newPdfDoc = await PDFDocument.create();
+                    const copiedPages = await newPdfDoc.copyPages(pdfDoc, newOrderIndices);
+                    copiedPages.forEach(page => newPdfDoc.addPage(page));
+                    download(await newPdfDoc.save(), 'DocuShift-Reordered.pdf', 'application/pdf');
+                },
+                'extract-images': async () => { showToast('error', 'This feature is complex and under development.'); },
+                'pdf-to-grayscale': async () => { showToast('error', 'This feature is complex and under development.'); }
+            };
+
+            // Initial Call
+            renderGallery();
+        
+        } catch (e) {
+            alert('A critical error occurred while initializing the app. Please check the browser console for details.\n\nError: ' + e.message);
+            console.error("Full Error Details:", e);
+        }
+    });
+    </script>
+</body>
+</html>
